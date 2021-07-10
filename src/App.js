@@ -1,13 +1,12 @@
 import { Switch, Route } from "react-router-dom";
-import Home from "./components/home/home";
-import Login from "./components/login/login";
-import Signup from "./components/signup/signup";
-import Session from "./components/session/session";
+import Home from "./components/home/Home";
+import Login from "./components/login/Login";
+import Session from "./components/session/Session";
 import "./App.css";
 
 const App = () => {
   return (
-    <div className="app">
+    <div>
       <Switch>
         <Route
           exact
@@ -21,13 +20,6 @@ const App = () => {
           path="/login"
           render={() => {
             return <Login></Login>;
-          }}
-        />
-        <Route
-          exact
-          path="/signup"
-          render={() => {
-            return <Signup></Signup>;
           }}
         />
         <Route
