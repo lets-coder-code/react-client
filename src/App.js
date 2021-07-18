@@ -1,12 +1,23 @@
+import background from "./images/home-image.jpeg";
 import { Switch, Route } from "react-router-dom";
-import Home from "./components/home/Home";
-import Login from "./components/login/Login";
-import Session from "./components/session/Session";
+import Home from "./components/Home";
+import Form from "./components/Form";
+import Session from "./components/Session";
+import Recipe from "./components/Recipe";
+import GoOut from "./components/GoOut";
 import "./App.css";
 
 const App = () => {
   return (
-    <div>
+    <div
+      className="app-container"
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Switch>
         <Route
           exact
@@ -17,9 +28,24 @@ const App = () => {
         />
         <Route
           exact
+          path="/signup"
+          render={() => {
+            return <Form typeOfForm="signup"></Form>;
+          }}
+        />
+        <Route
+          exact
           path="/login"
           render={() => {
-            return <Login></Login>;
+            return <Form typeOfForm="login"></Form>;
+          }}
+        />
+        <Route
+          exact
+          path="/logout"
+          render={() => {
+            window.localStorage.clear();
+            return <Form typeOfForm="login"></Form>;
           }}
         />
         <Route
@@ -27,6 +53,20 @@ const App = () => {
           path="/session"
           render={() => {
             return <Session></Session>;
+          }}
+        />
+        <Route
+          exact
+          path="/recipe/:id"
+          render={() => {
+            return <Recipe></Recipe>;
+          }}
+        />
+        <Route
+          exact
+          path="/notPermitted"
+          render={() => {
+            return <GoOut></GoOut>;
           }}
         />
       </Switch>
