@@ -1,7 +1,7 @@
 import NavBar from "./Navigation";
 import Loading from "./Loading";
 import { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 
 const Recipe = () => {
   let [info, setInfo] = useState({
@@ -44,6 +44,9 @@ const Recipe = () => {
     } else {
       setInfo({
         name: responseFromGet.recipe.name,
+        country: responseFromGet.recipe.country,
+        ingredients: responseFromGet.recipe.ingredients,
+        preparation: responseFromGet.recipe.preparation,
         loaded: true,
       });
     }
@@ -60,7 +63,37 @@ const Recipe = () => {
     return (
       <div className="session-container light-green-bg">
         <NavBar links={links}></NavBar>
-        <div>{info.name}</div>
+        <div className="options-container">
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <div className="link option-link">Update</div>
+          </Link>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <div className="link delete-link">Delete</div>
+          </Link>
+        </div>
+        <table className="table">
+          <tbody>
+            <tr>
+              <td>Name: {info.name}</td>
+            </tr>
+            <tr>
+              <td>Country: {info.country}</td>
+            </tr>
+            <tr>
+              <td>
+                Ingredients:
+                {info.ingredients.map((ingredient) => {
+                  return <span className="margin-left-2">{ingredient}</span>;
+                })}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="line-height-2">{info.preparation}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }

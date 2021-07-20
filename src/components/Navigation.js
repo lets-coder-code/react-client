@@ -11,7 +11,7 @@ const Navigation = (props) => {
         <Nav className="mr-auto">
           {links.map((link) => {
             return (
-              <Nav.Link href={link[1]} key={link[2]} className="margin-right-2">
+              <Nav.Link href={link[1]} key={link[2]} className="margin-right-1">
                 <p className="white-font kalam-font little-font">{link[0]}</p>
               </Nav.Link>
             );
