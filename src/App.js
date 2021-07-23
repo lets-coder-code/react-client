@@ -1,9 +1,10 @@
 import background from "./images/home-image.jpeg";
 import { Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
-import Form from "./components/Form";
+import LoginAndSignup from "./components/LoginAndSignup";
 import Session from "./components/Session";
 import Recipe from "./components/Recipe";
+import NewAndUpdate from "./components/NewAndUpdate";
 import GoOut from "./components/GoOut";
 import "./App.css";
 
@@ -30,14 +31,14 @@ const App = () => {
           exact
           path="/signup"
           render={() => {
-            return <Form typeOfForm="signup"></Form>;
+            return <LoginAndSignup typeOfForm="signup"></LoginAndSignup>;
           }}
         />
         <Route
           exact
           path="/login"
           render={() => {
-            return <Form typeOfForm="login"></Form>;
+            return <LoginAndSignup typeOfForm="login"></LoginAndSignup>;
           }}
         />
         <Route
@@ -45,7 +46,7 @@ const App = () => {
           path="/logout"
           render={() => {
             window.localStorage.clear();
-            return <Form typeOfForm="login"></Form>;
+            return <LoginAndSignup typeOfForm="login"></LoginAndSignup>;
           }}
         />
         <Route
@@ -67,6 +68,20 @@ const App = () => {
           path="/notPermitted"
           render={() => {
             return <GoOut></GoOut>;
+          }}
+        />
+        <Route
+          exact
+          path="/newRecipe"
+          render={() => {
+            return <NewAndUpdate typeOfForm="new-recipe"></NewAndUpdate>;
+          }}
+        />
+        <Route
+          exact
+          path="/updateRecipe"
+          render={() => {
+            return <NewAndUpdate typeOfForm="update-recipe"></NewAndUpdate>;
           }}
         />
       </Switch>

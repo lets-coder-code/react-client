@@ -63,8 +63,8 @@ const Recipe = () => {
     return (
       <div className="session-container light-green-bg">
         <NavBar links={links}></NavBar>
-        <div className="options-container">
-          <Link to="/" style={{ textDecoration: 'none' }}>
+        <div className="options-container margin-bottom-4">
+          <Link to="/updateRecipe" style={{ textDecoration: 'none' }}>
             <div className="link option-link">Update</div>
           </Link>
           <Link to="/" style={{ textDecoration: 'none' }}>
@@ -83,13 +83,14 @@ const Recipe = () => {
               <td>
                 Ingredients:
                 {info.ingredients.map((ingredient) => {
-                  return <span className="margin-left-2">{ingredient}</span>;
+                  return <span className="margin-left-2" key={ingredient}>{ingredient}</span>;
                 })}
               </td>
             </tr>
             <tr>
               <td>
-                <p className="line-height-2">{info.preparation}</p>
+                Preparation:
+                <span className="line-height-2">{info.preparation}</span>
               </td>
             </tr>
           </tbody>

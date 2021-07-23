@@ -38,7 +38,7 @@ const Session = () => {
     } else {
       setInfo({
         ...info,
-        name: responseFromGet.user.name,
+        name: responseFromGet.user.username,
         recipes: responseFromGet.user.recipes,
         loaded: true,
       });
@@ -59,6 +59,11 @@ const Session = () => {
         <h2 className="margin-bottom-2-dot-5 medium-font kalam-font">
           Welcome {info.name}
         </h2>
+        <div className="option-container margin-bottom-4">
+          <Link to="/newRecipe" style={{ textDecoration: "none" }}>
+            <div className="link option-link">New recipe</div>
+          </Link>
+        </div>
         <table className="table">
           <thead>
             <tr>
@@ -84,7 +89,10 @@ const Session = () => {
                     <div className="align-center">{recipe.country}</div>
                   </td>
                   <td>
-                    <Link to={`/recipe/${recipe._id}`} style={{ textDecoration: 'none' }}>
+                    <Link
+                      to={`/recipe/${recipe._id}`}
+                      style={{ textDecoration: "none" }}
+                    >
                       <div className="align-center">{recipe.name} detail</div>
                     </Link>
                   </td>

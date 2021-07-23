@@ -1,31 +1,39 @@
 import NavBar from "./Navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 const useState = React.useState;
 
-const Form = (props) => {
+const LoginAndSignup = (props) => {
   let [info, setInfo] = useState({
     username: "",
     password: "",
     auth: null,
     message: "",
+    title: "",
+    url: "",
   });
 
-  let componentTitle = "";
-  let url = "";
   let links = [
     ["Home", "/", 0],
     ["Sign up", "/signup", 1],
     ["Log in", "/login", 2],
   ];
 
-  if (props.typeOfForm === "login") {
-    componentTitle = "Log in";
-    url = "http://localhost:3001/login";
-  } else if (props.typeOfForm === "signup") {
-    componentTitle = "Sign up";
-    url = "http://localhost:3001/signup";
-  }
+  const selectForm = () => {
+    if (props.typeOfForm === "login") {
+      setInfo({
+        ...info,
+        title: "Log in",
+        url: "http://localhost:3001/login",
+      });
+    } else if (props.typeOfForm === "signup") {
+      setInfo({
+        ...info,
+        title: "Sign up",
+        url: "http://localhost:3001/signup",
+      });
+    }
+  };
 
   let history = useHistory();
 
@@ -39,15 +47,15 @@ const Form = (props) => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    let myToken = await postLogin(url);
+    let myToken = await postInfo(info.url);
     if (myToken !== null) {
       saveToken(myToken);
       redirect();
     }
   };
 
-  const postLogin = async (requestUrl) => {
-    let responseFromPost = await fetch(requestUrl, {
+  const postInfo = async (requestUrl) => {
+    let responseFromPost = await fetch(info.url, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -78,12 +86,17 @@ const Form = (props) => {
     history.push("/session");
   };
 
+  useEffect(() => {
+    selectForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div className="hundred-per-cent-container">
       <NavBar links={links}></NavBar>
       <form onSubmit={handleFormSubmit} className="form white-border-radius">
         <h2 className="margin-bottom-2-dot-5 medium-font kalam-font bold-font white-font">
-          {componentTitle}
+          {info.title}
         </h2>
         <label className="margin-bottom-1-dot-2">
           <p className="little-font white-font">User name</p>
@@ -116,4 +129,4 @@ const Form = (props) => {
   );
 };
 
-export default Form;
+export default LoginAndSignup;
