@@ -1,14 +1,20 @@
 import NavBar from "./Navigation";
 import Loading from "./Loading";
-import { Link, useHistory } from "react-router-dom";
+import followed from "../images/followed.png";
+import notFollowed from "../images/notFollowed.png";
 import { useState, useEffect } from "react";
+import { useParams, useHistory, Link } from "react-router-dom";
 
-const Session = () => {
+const User = () => {
   let [info, setInfo] = useState({
+    userId: useParams().userId,
+    loaded: false,
     name: "",
     recipes: [],
-    loaded: false,
+    followed: false,
   });
+
+  let history = useHistory();
 
   let links = [
     ["Log out", "/logout", 0],
@@ -19,17 +25,18 @@ const Session = () => {
     ["Search user", "/searchUser", 5],
   ];
 
-  let history = useHistory();
-
   const getUser = async () => {
-    let responseFromGet = await fetch("http://localhost:3001/user", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: window.localStorage.token,
-      },
-    })
+    let responseFromGet = await fetch(
+      `http://localhost:3001/user/${info.userId}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          token: window.localStorage.token,
+        },
+      }
+    )
       .then((response) => response.json())
       .then((result) => {
         return result;
@@ -41,10 +48,46 @@ const Session = () => {
         ...info,
         name: responseFromGet.user.username,
         recipes: responseFromGet.user.recipes,
+        followed: responseFromGet.followed,
         loaded: true,
       });
     }
   };
+
+  const followUnfollow = async (event) => {
+    event.preventDefault();
+    let responseFromGet = await fetch(
+      `http://localhost:3001/followUser/${info.userId}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          token: window.localStorage.token,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        return result;
+      });
+    
+    if (responseFromGet.auth === false) {
+      history.push("/notPermitted");
+    } else {
+      if(info.followed === false){
+        setInfo({
+          ...info,
+          followed: true,
+        })
+      } else if(info.followed === true){
+        setInfo({
+          ...info,
+          followed: false,
+        })
+      }
+    }
+  }
 
   useEffect(() => {
     getUser();
@@ -53,17 +96,27 @@ const Session = () => {
 
   if (info.loaded === false) {
     return <Loading></Loading>;
-  } else {
+  } else if (info.loaded === true) {
     return (
       <div className="session-container light-green-bg">
         <NavBar links={links}></NavBar>
-        <h2 className="margin-bottom-2-dot-5 medium-font kalam-font">
-          Welcome {info.name}
-        </h2>
-        <div className="option-container margin-bottom-4">
-          <Link to="/newRecipe" style={{ textDecoration: "none" }}>
-            <div className="link option-link">New recipe</div>
-          </Link>
+        <div className="options-container margin-bottom-4">
+          <h2 className="margin-bottom-2-dot-5 medium-font kalam-font">
+            {info.name}
+          </h2>
+          {info.followed === true ? (
+            <button className="following-button" onClick={followUnfollow}>
+              <img src={followed} alt="Followed" className="follow-img" />
+            </button>
+          ) : (
+            <button className="following-button" onClick={followUnfollow}>
+              <img
+                src={notFollowed}
+                alt="Not followed"
+                className="follow-img"
+              />
+            </button>
+          )}
         </div>
         <table className="table">
           <thead>
@@ -107,4 +160,4 @@ const Session = () => {
   }
 };
 
-export default Session;
+export default User;

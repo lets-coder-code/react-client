@@ -166,7 +166,7 @@ body {
 }
 
 .little-font {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 .bold-font {
@@ -283,6 +283,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0rem 5rem;
 }
 
 .light-green-bg {
@@ -333,6 +334,9 @@ body {
   border: 2px solid white;
   border-radius: 1rem;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .option-link {
@@ -341,4 +345,38 @@ body {
 
 .delete-link {
   background: red;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (min-width: 400px) {
+  .buttons-container {
+    width: 15rem;
+  }
+}
+
+@media (max-width: 399px) {
+  .buttons-container {
+    width: 9rem;
+  }
+}
+
+.confirmation-button {
+  padding: 0.5rem;
+  color: white;
+  border: 2px solid white;
+  border-radius: 0.7rem;
+}
+
+.follow-img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.following-button {
+  background: transparent;
+  border-color: transparent;
 }

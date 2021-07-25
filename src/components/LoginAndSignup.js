@@ -38,9 +38,9 @@ const LoginAndSignup = (props) => {
   let history = useHistory();
 
   const handleChange = (event) => {
+    event.preventDefault();
     setInfo({
       ...info,
-      [event.target.name]: event.target.value,
       [event.target.name]: event.target.value,
     });
   };

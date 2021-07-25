@@ -6,6 +6,9 @@ import Session from "./components/Session";
 import Recipe from "./components/Recipe";
 import NewAndUpdate from "./components/NewAndUpdate";
 import GoOut from "./components/GoOut";
+import DeleteConfirmation from "./components/DeleteConfirmation";
+import Search from "./components/Search";
+import User from "./components/User";
 import "./App.css";
 
 const App = () => {
@@ -79,9 +82,37 @@ const App = () => {
         />
         <Route
           exact
-          path="/updateRecipe"
+          path="/updateRecipe/:id/:name/:country/:ingredients/:preparation"
           render={() => {
             return <NewAndUpdate typeOfForm="update-recipe"></NewAndUpdate>;
+          }}
+        />
+        <Route
+          exact
+          path="/deleteRecipe/:id"
+          render={() => {
+            return <DeleteConfirmation></DeleteConfirmation>;
+          }}
+        />
+        <Route
+          exact
+          path="/searchRecipe"
+          render={() => {
+            return <Search typeOfElement="recipe"></Search>;
+          }}
+        />
+        <Route
+          exact
+          path="/searchUser"
+          render={() => {
+            return <Search typeOfElement="user"></Search>;
+          }}
+        />
+        <Route
+          exact
+          path="/user/:userId"
+          render={() => {
+            return <User></User>;
           }}
         />
       </Switch>

@@ -6,6 +6,8 @@ const Loading = () => {
     ["My home", "/session", 1],
     ["Following", "/", 2],
     ["Favourites", "/", 3],
+    ["Search recipe", "/searchRecipe", 4],
+    ["Search user", "/searchUser", 5],
   ];
   return (
     <div className="message-container light-green-bg">

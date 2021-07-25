@@ -1,6 +1,6 @@
 import NavBar from "./Navigation";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const NewAndUpdate = (props) => {
   let [info, setInfo] = useState({
@@ -11,7 +11,10 @@ const NewAndUpdate = (props) => {
     loading: true,
     title: "",
     url: "",
+    form: "",
   });
+
+  let params = useParams();
 
   let history = useHistory();
 
@@ -20,6 +23,8 @@ const NewAndUpdate = (props) => {
     ["My home", "/session", 1],
     ["Following", "/", 2],
     ["Favourites", "/", 3],
+    ["Search recipe", "/searchRecipe", 4],
+    ["Search user", "/searchUser", 5],
   ];
 
   const selectForm = () => {
@@ -28,44 +33,73 @@ const NewAndUpdate = (props) => {
         ...info,
         title: "New recipe",
         url: "http://localhost:3001/newRecipe",
+        form: "new",
       });
     } else if (props.typeOfForm === "update-recipe") {
       setInfo({
         ...info,
         title: "Update recipe",
-        name: props.name,
-        country: props.country,
-        ingredientsArr: props.ingredients,
-        preparation: props.preparation,
-        url: "http://localhost:3001/updateRecipe",
+        name: params.name,
+        country: params.country,
+        ingredients: params.ingredients,
+        preparation: params.preparation,
+        url: `http://localhost:3001/updateRecipe/${params.id}`,
+        form: "update",
       });
     }
   };
 
   const postInfo = async () => {
-    let ingredientsArr = info.ingredients.split(", ");
-    let responseFromPost = await fetch(info.url, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: window.localStorage.token,
-      },
-      body: JSON.stringify({
-        name: info.name,
-        country: info.country,
-        ingredients: ingredientsArr,
-        preparation: info.preparation,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        return result;
-      });
-    if (responseFromPost.auth === true) {
-      history.push(`/recipe/${responseFromPost.recipe._id}`);
-    } else if (responseFromPost.auth === false) {
-      history.push("/notPermitTed");
+    if (info.form === "new") {
+      let ingredientsArr = info.ingredients.split(", ");
+      let responseFromPost = await fetch(info.url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          token: window.localStorage.token,
+        },
+        body: JSON.stringify({
+          name: info.name,
+          country: info.country,
+          ingredients: ingredientsArr,
+          preparation: info.preparation,
+        }),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          return result;
+        });
+      if (responseFromPost.auth === true) {
+        history.push(`/recipe/${responseFromPost.recipe._id}`);
+      } else if (responseFromPost.auth === false) {
+        history.push("/notPermitted");
+      }
+    } else if (info.form === "update") {
+      let ingredientsArr = info.ingredients.split(", ");
+      let responseFromPost = await fetch(info.url, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          token: window.localStorage.token,
+        },
+        body: JSON.stringify({
+          name: info.name,
+          country: info.country,
+          ingredients: ingredientsArr,
+          preparation: info.preparation,
+        }),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          return result;
+        });
+      if (responseFromPost.auth === true) {
+        history.push(`/recipe/${responseFromPost.recipe._id}`);
+      } else if (responseFromPost.auth === false) {
+        history.push("/notPermitted");
+      }
     }
   };
 
@@ -100,6 +134,7 @@ const NewAndUpdate = (props) => {
         <input
           type="text"
           name="name"
+          value={info.name}
           onChange={handleChange}
           className="margin-bottom-1-dot-5 little-font form-input"
         />
@@ -109,6 +144,7 @@ const NewAndUpdate = (props) => {
         <input
           type="text"
           name="country"
+          value={info.country}
           onChange={handleChange}
           className="margin-bottom-1-dot-5 little-font form-input"
         />
@@ -118,6 +154,7 @@ const NewAndUpdate = (props) => {
         <input
           type="text"
           name="ingredients"
+          value={info.ingredients}
           onChange={handleChange}
           className="margin-bottom-1-dot-5 little-font form-input"
         />
@@ -127,6 +164,7 @@ const NewAndUpdate = (props) => {
         <textarea
           type="text"
           name="preparation"
+          value={info.preparation}
           onChange={handleChange}
           className="margin-bottom-1-dot-5 little-font form-input"
           rows="10"
