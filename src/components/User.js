@@ -71,23 +71,23 @@ const User = () => {
       .then((result) => {
         return result;
       });
-    
+
     if (responseFromGet.auth === false) {
       history.push("/notPermitted");
     } else {
-      if(info.followed === false){
+      if (info.followed === false) {
         setInfo({
           ...info,
           followed: true,
-        })
-      } else if(info.followed === true){
+        });
+      } else if (info.followed === true) {
         setInfo({
           ...info,
           followed: false,
-        })
+        });
       }
     }
-  }
+  };
 
   useEffect(() => {
     getUser();
@@ -144,7 +144,7 @@ const User = () => {
                   </td>
                   <td>
                     <Link
-                      to={`/recipe/${recipe._id}`}
+                      to={`/othersRecipe/${recipe._id}`}
                       style={{ textDecoration: "none" }}
                     >
                       <div className="align-center">{recipe.name} detail</div>

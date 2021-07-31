@@ -91,7 +91,7 @@ const Session = () => {
                   </td>
                   <td>
                     <Link
-                      to={`/recipe/${recipe._id}`}
+                      to={`/myRecipe/${recipe._id}`}
                       style={{ textDecoration: "none" }}
                     >
                       <div className="align-center">{recipe.name} detail</div>

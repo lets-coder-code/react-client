@@ -2,8 +2,10 @@ import NavBar from "./Navigation";
 import Loading from "./Loading";
 import { useEffect, useState } from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
+import favourite from "../images/favourite.png";
+import notFavourite from "../images/notFavourite.png";
 
-const Recipe = () => {
+const Recipe = (props) => {
   let [info, setInfo] = useState({
     id: useParams().id,
     name: "",
@@ -12,6 +14,9 @@ const Recipe = () => {
     preparation: "",
     loaded: false,
     auth: false,
+    creatorName: "",
+    creatorId: "",
+    isFavourite: false,
   });
 
   let links = [
@@ -53,7 +58,45 @@ const Recipe = () => {
         ingredients: responseFromGet.recipe.ingredients,
         preparation: responseFromGet.recipe.preparation,
         loaded: true,
+        creatorName: responseFromGet.recipe.creator.username,
+        creatorId: responseFromGet.recipe.creator._id,
+        isFavourite: responseFromGet.favourite,
       });
+    }
+  };
+
+  const followUnfollow = async (event) => {
+    event.preventDefault();
+    let responseFromGet = await fetch(
+      `http://localhost:3001/favouriteRecipe/${info.id}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          token: window.localStorage.token,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        return result;
+      });
+
+    if (responseFromGet.auth === false) {
+      history.push("/notPermitted");
+    } else {
+      if (info.isFavourite === false) {
+        setInfo({
+          ...info,
+          isFavourite: true,
+        });
+      } else if (info.isFavourite === true) {
+        setInfo({
+          ...info,
+          isFavourite: false,
+        });
+      }
     }
   };
 
@@ -67,18 +110,48 @@ const Recipe = () => {
   } else {
     return (
       <div className="session-container light-green-bg">
+        {console.log(info)}
         <NavBar links={links}></NavBar>
-        <div className="options-container margin-bottom-4">
-          <Link
-            to={`/updateRecipe/${info.id}/${info.name}/${info.country}/${info.ingredients}/${info.preparation}`}
-            style={{ textDecoration: "none" }}
-          >
-            <div className="link option-link">Update</div>
-          </Link>
-          <Link to={`/deleteRecipe/${info.id}`} style={{ textDecoration: "none" }}>
-            <div className="link delete-link">Delete</div>
-          </Link>
-        </div>
+        {props.owner === "me" ? (
+          <div className="options-container margin-bottom-4">
+            <Link
+              to={`/updateRecipe/${info.id}/${info.name}/${info.country}/${info.ingredients}/${info.preparation}`}
+              style={{ textDecoration: "none" }}
+            >
+              <div className="link option-link">Update</div>
+            </Link>
+            <Link
+              to={`/deleteRecipe/${info.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <div className="link delete-link">Delete</div>
+            </Link>{" "}
+          </div>
+        ) : (
+          <div className="options-container margin-bottom-4">
+            <h2 className="margin-bottom-2-dot-5 medium-font kalam-font">
+              <Link
+                to={`/user/${info.creatorId}`}
+                style={{ textDecoration: "none" }}
+              >
+                Owner: {info.creatorName}
+              </Link>
+            </h2>
+            {info.isFavourite === true ? (
+              <button className="following-button" onClick={followUnfollow}>
+                <img src={favourite} alt="Followed" className="follow-img" />
+              </button>
+            ) : (
+              <button className="following-button" onClick={followUnfollow}>
+                <img
+                  src={notFavourite}
+                  alt="Not followed"
+                  className="follow-img"
+                />
+              </button>
+            )}
+          </div>
+        )}
         <table className="table">
           <tbody>
             <tr>
@@ -89,7 +162,7 @@ const Recipe = () => {
             </tr>
             <tr>
               <td>
-                Ingredients: 
+                Ingredients:
                 {info.ingredients.map((ingredient) => {
                   return (
                     <span className="margin-left-2" key={ingredient}>

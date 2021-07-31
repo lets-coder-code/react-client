@@ -54,7 +54,7 @@ const Search = (props) => {
               auth: true,
             });
           } else {
-            history.push(`/recipe/${responseFromGet.recipe._id}`);
+            history.push(`/othersRecipe/${responseFromGet.recipe._id}`);
           }
         } else if (responseFromGet.auth === false) {
           history.push("/notPermitted");

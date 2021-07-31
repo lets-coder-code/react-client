@@ -61,9 +61,16 @@ const App = () => {
         />
         <Route
           exact
-          path="/recipe/:id"
+          path="/myRecipe/:id"
           render={() => {
-            return <Recipe></Recipe>;
+            return <Recipe owner="me"></Recipe>;
+          }}
+        />
+        <Route
+          exact
+          path="/othersRecipe/:id"
+          render={() => {
+            return <Recipe owner="other"></Recipe>;
           }}
         />
         <Route
