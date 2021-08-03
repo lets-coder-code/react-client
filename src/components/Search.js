@@ -1,6 +1,7 @@
 import NavBar from "./Navigation";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import chooseYourNavBar from "../navBarContent";
 
 const Search = (props) => {
   let [info, setInfo] = useState({
@@ -12,14 +13,7 @@ const Search = (props) => {
 
   let history = useHistory();
 
-  let links = [
-    ["Log out", "/logout", 0],
-    ["My home", "/session", 1],
-    ["Following", "/", 2],
-    ["Favourites", "/", 3],
-    ["Search recipe", "/searchRecipe", 4],
-    ["Search user", "/searchUser", 5],
-  ];
+  let links = chooseYourNavBar(true);
 
   const getInfo = async () => {
     if (info.name === "") {
@@ -47,14 +41,14 @@ const Search = (props) => {
             return result;
           });
         if (responseFromGet.auth === true) {
-          if (responseFromGet.recipe === null) {
+          if (responseFromGet.recipes === null) {
             setInfo({
               ...info,
               message: responseFromGet.message,
               auth: true,
             });
           } else {
-            history.push(`/othersRecipe/${responseFromGet.recipe._id}`);
+            history.push(`/recipes/${responseFromGet.recipeName}`);
           }
         } else if (responseFromGet.auth === false) {
           history.push("/notPermitted");

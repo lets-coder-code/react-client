@@ -1,14 +1,8 @@
 import NavBar from "./Navigation";
+import chooseYourNavBar from "../navBarContent";
 
 const Loading = () => {
-  let links = [
-    ["Log out", "/logout", 0],
-    ["My home", "/session", 1],
-    ["Following", "/", 2],
-    ["Favourites", "/", 3],
-    ["Search recipe", "/searchRecipe", 4],
-    ["Search user", "/searchUser", 5],
-  ];
+  let links = chooseYourNavBar(true);
   return (
     <div className="message-container light-green-bg">
       <NavBar links={links}></NavBar>

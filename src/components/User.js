@@ -1,4 +1,5 @@
 import NavBar from "./Navigation";
+import chooseYourNavBar from "../navBarContent";
 import Loading from "./Loading";
 import followed from "../images/followed.png";
 import notFollowed from "../images/notFollowed.png";
@@ -16,14 +17,7 @@ const User = () => {
 
   let history = useHistory();
 
-  let links = [
-    ["Log out", "/logout", 0],
-    ["My home", "/session", 1],
-    ["Following", "/", 2],
-    ["Favourites", "/", 3],
-    ["Search recipe", "/searchRecipe", 4],
-    ["Search user", "/searchUser", 5],
-  ];
+  let links = chooseYourNavBar(true);
 
   const getUser = async () => {
     let responseFromGet = await fetch(

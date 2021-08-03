@@ -380,3 +380,42 @@ body {
   background: transparent;
   border-color: transparent;
 }
+
+@media (min-width: 900px) {
+  .settings-container {
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 899px) {
+  .settings-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+@media (max-width: 699px) {
+  .settings-container {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+.settings-link {
+  padding: 1rem;
+  border: 2px solid white;
+  border-radius: 1rem;
+  color: white;
+  width: 12rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

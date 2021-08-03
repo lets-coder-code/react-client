@@ -1,11 +1,8 @@
 import NavBar from "./Navigation";
+import chooseYourNavBar from "../navBarContent";
 
 const Home = () => {
-  let links = [
-    ["Home", "/", 0],
-    ["Sign up", "/signup", 1],
-    ["Log in", "/login", 2],
-  ];
+  let links = chooseYourNavBar(false);
 
   return (
     <div className="hundred-per-cent-container">

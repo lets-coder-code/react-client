@@ -1,6 +1,7 @@
 import NavBar from "./Navigation";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import chooseYourNavBar from "../navBarContent";
 const useState = React.useState;
 
 const LoginAndSignup = (props) => {
@@ -9,27 +10,24 @@ const LoginAndSignup = (props) => {
     password: "",
     auth: null,
     message: "",
+    links: [],
     title: "",
     url: "",
   });
-
-  let links = [
-    ["Home", "/", 0],
-    ["Sign up", "/signup", 1],
-    ["Log in", "/login", 2],
-  ];
 
   const selectForm = () => {
     if (props.typeOfForm === "login") {
       setInfo({
         ...info,
         title: "Log in",
+        links: chooseYourNavBar(false),
         url: "http://localhost:3001/login",
       });
     } else if (props.typeOfForm === "signup") {
       setInfo({
         ...info,
         title: "Sign up",
+        links: chooseYourNavBar(false),
         url: "http://localhost:3001/signup",
       });
     }
@@ -50,7 +48,7 @@ const LoginAndSignup = (props) => {
     let myToken = await postInfo(info.url);
     if (myToken !== null) {
       saveToken(myToken);
-      redirect();
+      redirect("/session");
     }
   };
 
@@ -82,18 +80,18 @@ const LoginAndSignup = (props) => {
     window.localStorage.setItem("token", tokenElement);
   };
 
-  const redirect = () => {
-    history.push("/session");
+  const redirect = (route) => {
+    history.push(route);
   };
 
   useEffect(() => {
     selectForm();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   return (
     <div className="hundred-per-cent-container">
-      <NavBar links={links}></NavBar>
+      <NavBar links={info.links}></NavBar>
       <form onSubmit={handleFormSubmit} className="form white-border-radius">
         <h2 className="margin-bottom-2-dot-5 medium-font kalam-font bold-font white-font">
           {info.title}
@@ -104,6 +102,7 @@ const LoginAndSignup = (props) => {
         <input
           type="text"
           name="username"
+          placeholder="User name"
           onChange={handleChange}
           className="margin-bottom-1-dot-5 little-font form-input"
         />
@@ -113,6 +112,7 @@ const LoginAndSignup = (props) => {
         <input
           type="text"
           name="password"
+          placeholder="Password"
           onChange={handleChange}
           className="margin-bottom-1-dot-5 little-font form-input"
         />

@@ -1,47 +1,55 @@
 import NavBar from "./Navigation";
 import Loading from "./Loading";
-import { Link, useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
 import chooseYourNavBar from "../navBarContent";
+import { useState, useEffect } from "react";
+import { useParams, useHistory, Link } from "react-router-dom";
 
-const Session = () => {
+const Recipes = () => {
   let [info, setInfo] = useState({
-    name: "",
     recipes: [],
     loaded: false,
   });
 
+  let recipeName = useParams().name;
   let links = chooseYourNavBar(true);
-
   let history = useHistory();
 
-  const getUser = async () => {
-    let responseFromGet = await fetch("http://localhost:3001/user", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: window.localStorage.token,
-      },
-    })
-      .then((response) => response.json())
+  const getInfo = async () => {
+    let responseFromGet = await fetch(
+      `http://localhost:3001/recipes/${recipeName}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          token: window.localStorage.token,
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
       .then((result) => {
         return result;
       });
+    setInfo({
+      ...info,
+      recipes: responseFromGet.recipes,
+      loaded: true,
+    });
     if (responseFromGet.auth === false) {
       history.push("/notPermitted");
     } else {
       setInfo({
         ...info,
-        name: responseFromGet.user.username,
-        recipes: responseFromGet.user.recipes,
+        recipes: responseFromGet.recipes,
         loaded: true,
       });
     }
   };
 
   useEffect(() => {
-    getUser();
+    getInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,13 +60,8 @@ const Session = () => {
       <div className="session-container light-green-bg">
         <NavBar links={links}></NavBar>
         <h2 className="margin-bottom-2-dot-5 medium-font kalam-font">
-          Welcome {info.name}
+          Found recipes
         </h2>
-        <div className="option-container margin-bottom-4">
-          <Link to="/newRecipe" style={{ textDecoration: "none" }}>
-            <div className="link option-link">New recipe</div>
-          </Link>
-        </div>
         <table className="table">
           <thead>
             <tr>
@@ -85,7 +88,7 @@ const Session = () => {
                   </td>
                   <td>
                     <Link
-                      to={`/myRecipe/${recipe._id}`}
+                      to={`/othersRecipe/${recipe._id}`}
                       style={{ textDecoration: "none" }}
                     >
                       <div className="align-center">{recipe.name} detail</div>
@@ -101,4 +104,4 @@ const Session = () => {
   }
 };
 
-export default Session;
+export default Recipes;

@@ -1,6 +1,7 @@
 import NavBar from "./Navigation";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import chooseYourNavBar from "../navBarContent";
 
 const NewAndUpdate = (props) => {
   let [info, setInfo] = useState({
@@ -18,14 +19,7 @@ const NewAndUpdate = (props) => {
 
   let history = useHistory();
 
-  let links = [
-    ["Log out", "/logout", 0],
-    ["My home", "/session", 1],
-    ["Following", "/", 2],
-    ["Favourites", "/", 3],
-    ["Search recipe", "/searchRecipe", 4],
-    ["Search user", "/searchUser", 5],
-  ];
+  let links = chooseYourNavBar(true);
 
   const selectForm = () => {
     if (props.typeOfForm === "new-recipe") {
@@ -71,7 +65,7 @@ const NewAndUpdate = (props) => {
           return result;
         });
       if (responseFromPost.auth === true) {
-        history.push(`/recipe/${responseFromPost.recipe._id}`);
+        history.push(`/myRecipe/${responseFromPost.recipe._id}`);
       } else if (responseFromPost.auth === false) {
         history.push("/notPermitted");
       }
@@ -96,7 +90,7 @@ const NewAndUpdate = (props) => {
           return result;
         });
       if (responseFromPost.auth === true) {
-        history.push(`/recipe/${responseFromPost.recipe._id}`);
+        history.push(`/myRecipe/${responseFromPost.recipe._id}`);
       } else if (responseFromPost.auth === false) {
         history.push("/notPermitted");
       }
@@ -154,6 +148,7 @@ const NewAndUpdate = (props) => {
         <input
           type="text"
           name="ingredients"
+          placeholder="ingredient-1, ingredient-2..."
           value={info.ingredients}
           onChange={handleChange}
           className="margin-bottom-1-dot-5 little-font form-input"

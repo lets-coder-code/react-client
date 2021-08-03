@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
 import favourite from "../images/favourite.png";
 import notFavourite from "../images/notFavourite.png";
+import chooseYourNavBar from "../navBarContent";
 
 const Recipe = (props) => {
   let [info, setInfo] = useState({
@@ -19,14 +20,7 @@ const Recipe = (props) => {
     isFavourite: false,
   });
 
-  let links = [
-    ["Log out", "/logout", 0],
-    ["My home", "/session", 1],
-    ["Following", "/", 2],
-    ["Favourites", "/", 3],
-    ["Search recipe", "/searchRecipe", 4],
-    ["Search user", "/searchUser", 5],
-  ];
+  let links = chooseYourNavBar(true);
 
   let history = useHistory();
 
@@ -110,7 +104,6 @@ const Recipe = (props) => {
   } else {
     return (
       <div className="session-container light-green-bg">
-        {console.log(info)}
         <NavBar links={links}></NavBar>
         {props.owner === "me" ? (
           <div className="options-container margin-bottom-4">

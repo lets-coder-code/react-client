@@ -1,5 +1,5 @@
-import background from "./images/home-image.jpeg";
 import { Switch, Route } from "react-router-dom";
+import background from "./images/home-image.jpeg";
 import Home from "./components/Home";
 import LoginAndSignup from "./components/LoginAndSignup";
 import Session from "./components/Session";
@@ -9,6 +9,11 @@ import GoOut from "./components/GoOut";
 import DeleteConfirmation from "./components/DeleteConfirmation";
 import Search from "./components/Search";
 import User from "./components/User";
+import Favourites from "./components/Favourites";
+import Followed from "./components/Followed";
+import Recipes from "./components/Recipes";
+import AccountSettings from "./components/AccountSettings";
+import ChangePassword from "./components/ChangePassword";
 import "./App.css";
 
 const App = () => {
@@ -98,7 +103,14 @@ const App = () => {
           exact
           path="/deleteRecipe/:id"
           render={() => {
-            return <DeleteConfirmation></DeleteConfirmation>;
+            return <DeleteConfirmation element="recipe"></DeleteConfirmation>;
+          }}
+        />
+        <Route
+          exact
+          path="/deleteAccount"
+          render={() => {
+            return <DeleteConfirmation element="account"></DeleteConfirmation>;
           }}
         />
         <Route
@@ -120,6 +132,41 @@ const App = () => {
           path="/user/:userId"
           render={() => {
             return <User></User>;
+          }}
+        />
+        <Route
+          exact
+          path="/favourites"
+          render={() => {
+            return <Favourites></Favourites>;
+          }}
+        />
+        <Route
+          exact
+          path="/followed"
+          render={() => {
+            return <Followed></Followed>;
+          }}
+        />
+        <Route
+          exact
+          path="/recipes/:name"
+          render={() => {
+            return <Recipes></Recipes>;
+          }}
+        />
+        <Route
+          exact
+          path="/accountSettings"
+          render={() => {
+            return <AccountSettings></AccountSettings>;
+          }}
+        />
+        <Route
+          exact
+          path="/changePassword"
+          render={() => {
+            return <ChangePassword></ChangePassword>;
           }}
         />
       </Switch>
